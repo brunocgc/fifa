@@ -309,6 +309,6 @@ export async function getMatchDetail(matchId: string): Promise<{ detail: MatchDe
       dataSource: "fifa",
     };
   } catch {
-    return { detail: fallbackDetail, dataSource: fallbackDetail ? "fallback" : "fifa" };
+    return { detail: fallbackDetail, dataSource: "fallback" };
   }
 }
