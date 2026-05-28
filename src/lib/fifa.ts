@@ -1,5 +1,5 @@
 import { getCompetition } from "@/lib/competitions";
-import { getFallbackMatchDetail, getFallbackSnapshot } from "@/lib/mock-data";
+import { getStaticMatchDetail, getStaticSnapshot } from "@/lib/mock-data";
 import { CompetitionSnapshot, DataSource, MatchDetail, MatchEvent, MatchStat, MatchSummary, StandingRow, Team } from "@/lib/types";
 
 interface FifaConfig {
@@ -208,7 +208,7 @@ function buildStats(summary: MatchSummary): MatchStat[] {
 async function fetchJson(url: string) {
   const response = await fetch(url, {
     headers: { Accept: "application/json" },
-    next: { revalidate: 60 },
+    cache: "force-cache",
   });
 
   if (!response.ok) {
@@ -220,10 +220,10 @@ async function fetchJson(url: string) {
 
 export async function getCompetitionSnapshot(): Promise<CompetitionSnapshot> {
   const config = getConfig();
-  const fallback = getFallbackSnapshot();
+  const staticSnapshot = getStaticSnapshot();
 
   if (!config) {
-    return fallback;
+    return staticSnapshot;
   }
 
   try {
@@ -254,7 +254,7 @@ export async function getCompetitionSnapshot(): Promise<CompetitionSnapshot> {
     const matches = matchesItems.map(parseMatchSummary).filter((item): item is MatchSummary => Boolean(item));
 
     if (!standings.length || !matches.length) {
-      return fallback;
+      return staticSnapshot;
     }
 
     return {
@@ -265,16 +265,16 @@ export async function getCompetitionSnapshot(): Promise<CompetitionSnapshot> {
       matches,
     };
   } catch {
-    return fallback;
+    return staticSnapshot;
   }
 }
 
 export async function getMatchDetail(matchId: string): Promise<{ detail: MatchDetail | null; dataSource: DataSource }> {
   const config = getConfig();
-  const fallbackDetail = getFallbackMatchDetail(matchId);
+  const staticDetail = getStaticMatchDetail(matchId);
 
   if (!config) {
-    return { detail: fallbackDetail, dataSource: "fallback" };
+    return { detail: staticDetail, dataSource: "static" };
   }
 
   try {
@@ -289,7 +289,7 @@ export async function getMatchDetail(matchId: string): Promise<{ detail: MatchDe
 
     const summary = parseMatchSummary(asRecord(matchResponse)?.["Match"] ?? matchResponse);
     if (!summary) {
-      return { detail: fallbackDetail, dataSource: "fallback" };
+      return { detail: staticDetail, dataSource: "static" };
     }
 
     const timeline = parseTimeline(
@@ -309,6 +309,6 @@ export async function getMatchDetail(matchId: string): Promise<{ detail: MatchDe
       dataSource: "fifa",
     };
   } catch {
-    return { detail: fallbackDetail, dataSource: "fallback" };
+    return { detail: staticDetail, dataSource: "static" };
   }
 }

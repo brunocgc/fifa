@@ -40,7 +40,7 @@ npm start
 
 ## Integração com a FIFA API
 
-O projeto já possui uma camada preparada para consumir endpoints da FIFA no servidor. Para habilitar a integração, configure as variáveis abaixo em um arquivo `.env.local`:
+O projeto já possui uma camada preparada para consumir endpoints da FIFA no servidor. Sem variáveis de ambiente, a aplicação publica um snapshot estático commitado no repositório para continuar funcionando em build estático. Para habilitar a captura online da FIFA API, configure as variáveis abaixo em um arquivo `.env.local`:
 
 ```bash
 FIFA_API_BASE_URL=https://api.fifa.com/api/v3
@@ -50,7 +50,7 @@ FIFA_API_SEASON_ID=
 FIFA_API_STAGE_ID=
 ```
 
-> Enquanto essas variáveis não estiverem configuradas — ou se a API não responder — o site usa dados locais de fallback para desenvolvimento e demonstração.
+> Enquanto essas variáveis não estiverem configuradas — ou se a API não responder — o site usa o snapshot estático versionado no projeto.
 
 ## Internacionalização
 
@@ -63,7 +63,7 @@ As rotas ficam disponíveis em:
 
 - `src/app/[locale]`: páginas internacionalizadas
 - `src/app/[locale]/match/[matchId]`: central da partida com placar, resumo e linha do tempo
-- `src/lib/fifa.ts`: camada de integração com a FIFA API + fallback
+- `src/lib/fifa.ts`: camada de integração com a FIFA API + snapshot estático
 - `src/lib/competitions.ts`: catálogo de campeonatos para expansão futura
 - `src/lib/messages.ts`: traduções
 

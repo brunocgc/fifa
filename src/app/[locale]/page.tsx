@@ -47,7 +47,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               {messages.updatedAt}: {formatLongDateTime(snapshot.updatedAt, locale)}
             </span>
           </div>
-          {snapshot.dataSource === "fallback" ? <p className="hint">{messages.fallbackData}</p> : null}
+          {snapshot.dataSource === "static" ? <p className="hint">{messages.fallbackData}</p> : null}
         </aside>
       </section>
 

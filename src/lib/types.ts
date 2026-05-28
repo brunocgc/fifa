@@ -2,7 +2,7 @@ export type Locale = "pt" | "en" | "es";
 
 export type MatchStatus = "LIVE" | "FINISHED" | "UPCOMING";
 export type MatchEventType = "goal" | "card" | "substitution" | "var" | "penalty";
-export type DataSource = "fifa" | "fallback";
+export type DataSource = "fifa" | "static";
 
 export interface Team {
   id: string;

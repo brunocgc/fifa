@@ -234,16 +234,16 @@ const matchDetails: Record<string, MatchDetail> = {
   },
 };
 
-export function getFallbackSnapshot(): CompetitionSnapshot {
+export function getStaticSnapshot(): CompetitionSnapshot {
   return {
     competition: getCompetition("brasileirao"),
-    dataSource: "fallback",
+    dataSource: "static",
     updatedAt: "2026-05-28T21:15:00-03:00",
     standings,
     matches,
   };
 }
 
-export function getFallbackMatchDetail(matchId: string) {
+export function getStaticMatchDetail(matchId: string) {
   return matchDetails[matchId] ?? null;
 }

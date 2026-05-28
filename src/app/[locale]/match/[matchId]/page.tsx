@@ -1,10 +1,23 @@
 import Link from "next/link";
 import { Timeline } from "@/components/timeline";
 import { formatLongDateTime, formatStatus } from "@/lib/format";
-import { getMatchDetail } from "@/lib/fifa";
-import { isLocale } from "@/lib/i18n";
+import { getCompetitionSnapshot, getMatchDetail } from "@/lib/fifa";
+import { isLocale, locales } from "@/lib/i18n";
 import { getMessages } from "@/lib/messages";
 import { notFound } from "next/navigation";
+
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  const snapshot = await getCompetitionSnapshot();
+
+  return locales.flatMap((locale) =>
+    snapshot.matches.map((match) => ({
+      locale,
+      matchId: match.id,
+    })),
+  );
+}
 
 export default async function MatchPage({
   params,
